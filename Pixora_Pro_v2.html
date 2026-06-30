@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pixora — Photo & Logo Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0d10;
+    --panel:#131519;
+    --panel-2:#1a1d22;
+    --panel-3:#21252b;
+    --line:#ffffff12;
+    --line-soft:#ffffff0a;
+    --text:#f4f5f3;
+    --muted:#8b919a;
+    --accent:#5b8def;
+    --accent-2:#7c5cff;
+    --accent-dim:#5b8def1c;
+    --success:#3ecf8e;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Sora', sans-serif;
+    overflow:hidden;
+    height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  button{font-family:inherit; cursor:pointer;}
+  ::selection{background:var(--accent); color:#fff;}
+
+  /* ---- Top bar ---- */
+  .topbar{
+    height:60px;
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 20px;
+    background:linear-gradient(180deg, var(--panel), #121317);
+  }
+  .brand{display:flex; align-items:center; gap:11px; font-weight:700; font-size:16px; letter-spacing:-.01em;}
+  .brand .mark{
+    width:26px; height:26px; border-radius:8px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow:0 2px 10px -2px #5b8def66;
+    position:relative;
+  }
+  .brand .mark::after{
+    content:'';
+    position:absolute; inset:6px;
+    border:1.5px solid #ffffffaa; border-radius:3px;
+  }
+  .brand small{
+    display:block; font-size:10px; font-weight:500; color:var(--muted);
+    letter-spacing:.04em; margin-top:1px;
+  }
+  .top-actions{display:flex; gap:8px; align-items:center;}
+  .btn{
+    border:1px solid var(--line);
+    background:var(--panel-3);
+    color:var(--text);
+    padding:9px 15px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    display:flex; align-items:center; gap:7px;
+    transition:border-color .15s, background .15s, transform .1s;
+  }
+  .btn svg{width:15px; height:15px; flex-shrink:0;}
+  .btn:hover{border-color:#ffffff2a; background:#262a31;}
+  .btn:active{transform:scale(.97);}
+  .btn-accent{
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-color:transparent; color:#fff;
+    box-shadow:0 4px 14px -4px #5b8def55;
+  }
+  .btn-accent:hover{filter:brightness(1.08); background:linear-gradient(135deg, var(--accent), var(--accent-2));}
+  input[type=file]{display:none;}
+  .btn-group{display:flex; gap:2px; background:var(--panel-3); border:1px solid var(--line); border-radius:8px; padding:2px;}
+  .btn.icon-only{padding:7px 9px; border:none; background:transparent; box-shadow:none;}
+  .btn.icon-only:hover{background:#ffffff14;}
+  .btn.icon-only:disabled{opacity:.35; pointer-events:none;}
+  .zoom-group{
+    display:flex; align-items:center; gap:2px;
+    background:var(--panel-3); border:1px solid var(--line); border-radius:8px; padding:2px 4px;
+  }
+  .zoom-group #zoomLabel{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--muted);
+    width:40px; text-align:center;
+  }
+
+  /* ---- Layout ---- */
+  .layout{
+    display:grid;
+    grid-template-columns:84px 1fr 280px;
+    height:calc(100vh - 56px);
+  }
+
+  /* ---- Tool rail ---- */
+  .tool-rail{
+    background:var(--panel);
+    border-right:1px solid var(--line);
+    display:flex; flex-direction:column;
+    align-items:center;
+    padding:16px 0;
+    gap:4px;
+    overflow-y:auto;
+  }
+  .tool-btn{
+    width:62px; height:60px;
+    background:transparent; border:none;
+    border-radius:10px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:6px;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:600;
+    letter-spacing:.01em;
+    position:relative;
+    transition:background .15s, color .15s;
+  }
+  .tool-btn svg{width:19px; height:19px; flex-shrink:0;}
+  .tool-btn:hover{background:var(--panel-2); color:var(--text);}
+  .tool-btn.active{background:var(--accent-dim); color:var(--accent);}
+  .tool-btn.active::before{
+    content:'';
+    position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:3px; height:22px; border-radius:0 3px 3px 0;
+    background:linear-gradient(180deg, var(--accent), var(--accent-2));
+  }
+
+  /* ---- Canvas stage ---- */
+  .stage{
+    background:
+      linear-gradient(45deg, #17181c 25%, transparent 25%) -10px 0,
+      linear-gradient(-45deg, #17181c 25%, transparent 25%) -10px 0,
+      linear-gradient(45deg, transparent 75%, #17181c 75%),
+      linear-gradient(-45deg, transparent 75%, #17181c 75%);
+    background-size:20px 20px;
+    background-color:#0f1013;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:auto;
+  }
+  .canvas-wrap{
+    position:relative;
+    box-shadow:0 30px 70px -20px #000000cc, 0 0 0 1px var(--line);
+    border-radius:2px;
+  }
+  #mainCanvas{
+    display:block;
+    background:var(--panel-2);
+    touch-action:none;
+  }
+  .empty-state{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:14px; text-align:center;
+    color:var(--muted);
+  }
+  .empty-state .empty-icon{
+    width:52px; height:52px; border-radius:14px;
+    background:var(--panel-3); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--accent);
+  }
+  .empty-state .empty-icon svg{width:24px; height:24px;}
+  .empty-state h3{margin:0; color:var(--text); font-size:16px; font-weight:700;}
+  .empty-state p{margin:0; font-size:13px; max-width:30ch; line-height:1.6;}
+
+  /* ---- Right panel ---- */
+  .panel{
+    background:var(--panel);
+    border-left:1px solid var(--line);
+    padding:22px 20px;
+    overflow-y:auto;
+  }
+  .panel h4{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px; text-transform:uppercase; letter-spacing:.12em;
+    color:var(--accent); margin:0 0 18px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .ctrl{margin-bottom:18px;}
+  .ctrl label{
+    display:flex; justify-content:space-between;
+    font-size:12.5px; color:var(--muted); margin-bottom:7px;
+    font-weight:500;
+  }
+  .ctrl label span:last-child{
+    color:var(--text); font-family:'JetBrains Mono', monospace; font-size:11px;
+  }
+  .ctrl input[type=range]{
+    width:100%;
+    accent-color:var(--accent);
+    height:4px;
+  }
+  .ctrl input[type=color]{
+    width:100%; height:38px; border:1px solid var(--line); border-radius:8px; background:none; padding:2px;
+  }
+  .ctrl input[type=text], .ctrl select{
+    width:100%;
+    background:var(--panel-3);
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:10px 12px;
+    border-radius:8px;
+    font-size:13px;
+    font-family:inherit;
+  }
+  .ctrl input[type=text]:focus, .ctrl select:focus{outline:none; border-color:var(--accent);}
+  .filter-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:8px;
+  }
+  .filter-chip{
+    background:var(--panel-3);
+    border:1px solid var(--line);
+    border-radius:9px;
+    padding:11px 8px;
+    font-size:12px; font-weight:500; text-align:center;
+    color:var(--text);
+    transition:border-color .15s, background .15s;
+  }
+  .filter-chip:hover{border-color:#ffffff2a;}
+  .filter-chip.active{border-color:var(--accent); background:var(--accent-dim); color:var(--accent); font-weight:700;}
+
+  .sticker-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:7px;}
+  .sticker-item{
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    font-size:19px; background:var(--panel-3); border:1px solid var(--line); border-radius:9px;
+    transition:border-color .15s, transform .1s;
+  }
+  .sticker-item:hover{border-color:var(--accent); transform:translateY(-1px);}
+
+  .frame-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .frame-chip{
+    height:52px; border-radius:9px; border:1px solid var(--line); background:var(--panel-3);
+    font-size:11.5px; font-weight:500; color:var(--muted);
+    display:flex; align-items:center; justify-content:center;
+    transition:border-color .15s, color .15s;
+  }
+  .frame-chip:hover{border-color:var(--accent); color:var(--text);}
+  .frame-chip.active{border-color:var(--accent); background:var(--accent-dim); color:var(--accent); font-weight:700;}
+
+  .layer-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:9px 11px;
+    background:var(--panel-3);
+    border:1px solid var(--line);
+    border-radius:8px;
+    margin-bottom:7px;
+    font-size:12.5px;
+    gap:8px;
+  }
+  .layer-row span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .layer-row button{
+    background:none; border:none; color:var(--muted); font-size:13px;
+    width:22px; height:22px; border-radius:6px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .layer-row button:hover{color:#ff6464; background:#ff646422;}
+
+  .hint{font-size:12px; color:var(--muted); line-height:1.6;}
+
+  /* ---- Onboarding hint ---- */
+  .onboard{
+    position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
+    background:var(--panel-2); border:1px solid var(--line);
+    border-radius:12px; padding:12px 16px;
+    display:flex; align-items:center; gap:12px;
+    box-shadow:0 12px 30px -10px #000000aa;
+    max-width:90%;
+    z-index:20;
+    animation:fadeUp .4s ease;
+  }
+  .onboard svg{width:18px; height:18px; color:var(--accent); flex-shrink:0;}
+  .onboard p{margin:0; font-size:12.5px; color:var(--text); line-height:1.5;}
+  .onboard p strong{color:var(--accent);}
+  .onboard button{
+    background:var(--panel-3); border:1px solid var(--line); color:var(--muted);
+    border-radius:7px; width:24px; height:24px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:13px;
+  }
+  .onboard button:hover{color:var(--text);}
+
+  /* ---- Quick start card (first load) ---- */
+  .quickstart{
+    margin-top:20px;
+    background:var(--panel-3);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px;
+    max-width:280px;
+    text-align:left;
+  }
+  .quickstart h4{margin:0 0 10px; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; font-family:'JetBrains Mono', monospace;}
+  .quickstart ol{margin:0; padding-left:18px; font-size:12.5px; color:var(--muted); line-height:2;}
+  .quickstart ol li strong{color:var(--text);}
+  #splash{
+    position:fixed; inset:0;
+    background:
+      radial-gradient(circle at 30% 20%, #5b8def22 0%, transparent 45%),
+      radial-gradient(circle at 70% 80%, #7c5cff22 0%, transparent 45%),
+      #0a0b0e;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    z-index:1000;
+    transition:opacity .6s ease, visibility .6s ease;
+    overflow:hidden;
+  }
+  #splash.fade-out{opacity:0; visibility:hidden; pointer-events:none;}
+
+  .splash-orbit{
+    position:relative;
+    width:120px; height:120px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .splash-ring{
+    position:absolute; inset:0;
+    border-radius:50%;
+    border:1.5px solid transparent;
+    border-top-color:var(--accent);
+    border-right-color:var(--accent-2);
+    opacity:0;
+    animation:ringIn .5s ease .1s forwards, ringSpin 2.2s linear .6s infinite;
+  }
+  .splash-ring.r2{
+    inset:14px;
+    border-top-color:transparent;
+    border-bottom-color:var(--accent-2);
+    border-left-color:var(--accent);
+    animation:ringIn .5s ease .2s forwards, ringSpinRev 1.6s linear .6s infinite;
+  }
+  @keyframes ringIn{0%{opacity:0; transform:scale(.7);} 100%{opacity:.55; transform:scale(1);}}
+  @keyframes ringSpin{0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);}}
+  @keyframes ringSpinRev{0%{transform:rotate(0deg);} 100%{transform:rotate(-360deg);}}
+
+  .splash-logo{
+    width:64px; height:64px; border-radius:18px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 36px -8px #5b8def88;
+    opacity:0;
+    transform:scale(.4) rotate(-15deg);
+    animation:logoPop .65s cubic-bezier(.34,1.56,.64,1) .35s forwards;
+    z-index:2;
+  }
+  .splash-logo svg{width:30px; height:30px; color:#fff; opacity:0; animation:fadeUp .4s ease .75s forwards;}
+  @keyframes logoPop{
+    0%{opacity:0; transform:scale(.4) rotate(-15deg);}
+    60%{opacity:1; transform:scale(1.08) rotate(2deg);}
+    100%{opacity:1; transform:scale(1) rotate(0deg);}
+  }
+
+  .splash-name{
+    margin-top:28px;
+    display:flex;
+    font-size:26px; font-weight:800; letter-spacing:-.01em;
+  }
+  .splash-name span{
+    opacity:0;
+    display:inline-block;
+    transform:translateY(10px);
+    animation:letterIn .45s cubic-bezier(.2,.9,.3,1) forwards;
+  }
+  @keyframes letterIn{0%{opacity:0; transform:translateY(10px);} 100%{opacity:1; transform:translateY(0);}}
+
+  .splash-tag{
+    margin-top:6px;
+    font-size:11.5px; color:var(--muted);
+    letter-spacing:.14em; text-transform:uppercase;
+    font-family:'JetBrains Mono', monospace;
+    opacity:0;
+    animation:fadeUp .5s ease 1.15s forwards;
+  }
+  @keyframes fadeUp{
+    0%{opacity:0; transform:translateY(8px);}
+    100%{opacity:1; transform:translateY(0);}
+  }
+  .splash-bar{
+    width:130px; height:3px; border-radius:3px;
+    background:var(--panel-3);
+    margin-top:30px;
+    overflow:hidden;
+    opacity:0;
+    animation:fadeUp .4s ease 1.3s forwards;
+  }
+  .splash-bar-fill{
+    height:100%; width:0%;
+    background:linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius:3px;
+    animation:loadProgress 1.1s ease 1.4s forwards;
+  }
+  @keyframes loadProgress{
+    0%{width:0%;}
+    100%{width:100%;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .splash-ring, .splash-logo, .splash-logo svg, .splash-name span, .splash-tag, .splash-bar, .splash-bar-fill{animation:none !important; opacity:1 !important; transform:none !important; width:100% !important;}
+  }
+
+  @media (max-width: 880px){
+    .layout{grid-template-columns:64px 1fr; }
+    .panel{position:fixed; right:0; top:56px; bottom:0; width:260px; transform:translateX(100%); transition:transform .25s; z-index:30;}
+    .panel.open{transform:translateX(0);}
+  }
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="splash-orbit">
+    <div class="splash-ring"></div>
+    <div class="splash-ring r2"></div>
+    <div class="splash-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+    </div>
+  </div>
+  <div class="splash-name" id="splashName"></div>
+  <div class="splash-tag">Photo & Logo Editor</div>
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+</div>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="mark"></span>
+    <span>Pixora<small>Photo & Logo Editor</small></span>
+  </div>
+  <div class="top-actions">
+    <label class="btn" for="uploadInput">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Open Image
+    </label>
+    <input type="file" id="uploadInput" accept="image/*">
+    <div class="btn-group">
+      <button class="btn icon-only" id="undoBtn" title="Undo (Ctrl+Z)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+      </button>
+      <button class="btn icon-only" id="redoBtn" title="Redo (Ctrl+Y)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14l5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"/></svg>
+      </button>
+    </div>
+    <div class="zoom-group">
+      <button class="btn icon-only" id="zoomOutBtn" title="Zoom out">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      </button>
+      <span id="zoomLabel">100%</span>
+      <button class="btn icon-only" id="zoomInBtn" title="Zoom in">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      </button>
+    </div>
+    <button class="btn" id="resetBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+      Reset
+    </button>
+    <button class="btn btn-accent" id="downloadBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download
+    </button>
+  </div>
+</div>
+
+<div class="layout">
+
+  <div class="tool-rail" id="toolRail">
+    <button class="tool-btn active" data-tool="filters">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+      <span>Filters</span>
+    </button>
+    <button class="tool-btn" data-tool="crop">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.13 1L6 16a2 2 0 0 0 2 2h15"/><path d="M1 6.13L16 6a2 2 0 0 1 2 2v15"/></svg>
+      <span>Crop</span>
+    </button>
+    <button class="tool-btn" data-tool="text">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+      <span>Text</span>
+    </button>
+    <button class="tool-btn" data-tool="stickers">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Stickers</span>
+    </button>
+    <button class="tool-btn" data-tool="frames">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <span>Frames</span>
+    </button>
+    <button class="tool-btn" data-tool="layers">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      <span>Layers</span>
+    </button>
+  </div>
+
+  <div class="stage">
+    <div class="canvas-wrap">
+      <canvas id="mainCanvas" width="600" height="600"></canvas>
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <h3>No image loaded</h3>
+        <p>"Open Image" par click karein ya yahan apni photo/logo drop karein editing shuru karne ke liye.</p>
+        <div class="quickstart">
+          <h4>Quick Start</h4>
+          <ol>
+            <li><strong>Open Image</strong> se photo upload karein</li>
+            <li>Left side se <strong>tool</strong> choose karein</li>
+            <li>Right panel se <strong>adjust</strong> karein</li>
+            <li><strong>Download</strong> kar ke save karein</li>
+          </ol>
+        </div>
+      </div>
+      <div class="onboard" id="onboardTip" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <p><strong>Tip:</strong> Text ya sticker ko canvas par drag kar ke move karein. Ctrl+Z se undo karein.</p>
+        <button id="dismissTip">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel">
+
+    <div id="panel-filters">
+      <h4>Filters & Effects</h4>
+      <div class="filter-grid" id="filterChips"></div>
+      <div class="ctrl" style="margin-top:20px;">
+        <label><span>Brightness</span><span id="vBrightness">100%</span></label>
+        <input type="range" id="brightness" min="0" max="200" value="100">
+      </div>
+      <div class="ctrl">
+        <label><span>Contrast</span><span id="vContrast">100%</span></label>
+        <input type="range" id="contrast" min="0" max="200" value="100">
+      </div>
+      <div class="ctrl">
+        <label><span>Saturation</span><span id="vSaturate">100%</span></label>
+        <input type="range" id="saturate" min="0" max="200" value="100">
+      </div>
+      <div class="ctrl">
+        <label><span>Blur</span><span id="vBlur">0px</span></label>
+        <input type="range" id="blur" min="0" max="10" value="0">
+      </div>
+      <div class="ctrl">
+        <label><span>Hue Rotate</span><span id="vHue">0°</span></label>
+        <input type="range" id="hue" min="0" max="360" value="0">
+      </div>
+    </div>
+
+    <div id="panel-crop" style="display:none;">
+      <h4>Crop</h4>
+      <p class="hint">Canvas par drag karke crop area select karein, phir "Apply Crop" dabayen.</p>
+      <button class="btn btn-accent" id="applyCrop" style="width:100%; justify-content:center; margin-top:14px;">Apply Crop</button>
+      <button class="btn" id="cancelCrop" style="width:100%; justify-content:center; margin-top:8px;">Cancel</button>
+    </div>
+
+    <div id="panel-text" style="display:none;">
+      <h4>Add Text</h4>
+      <div class="ctrl">
+        <label>Text</label>
+        <input type="text" id="textInput" placeholder="Apna text likhein">
+      </div>
+      <div class="ctrl">
+        <label>Font</label>
+        <select id="fontSelect">
+          <option value="Sora">Sora (Modern)</option>
+          <option value="Georgia">Georgia (Serif)</option>
+          <option value="'JetBrains Mono'">Mono</option>
+          <option value="Impact">Impact (Bold)</option>
+          <option value="cursive">Cursive</option>
+        </select>
+      </div>
+      <div class="ctrl">
+        <label><span>Size</span><span id="vTextSize">48px</span></label>
+        <input type="range" id="textSize" min="12" max="160" value="48">
+      </div>
+      <div class="ctrl">
+        <label>Color</label>
+        <input type="color" id="textColor" value="#ffffff">
+      </div>
+      <button class="btn btn-accent" id="addTextBtn" style="width:100%; justify-content:center;">+ Add Text Layer</button>
+      <p class="hint" style="margin-top:14px;">Text ko canvas par drag karke move karein. "Layers" tab se delete karein.</p>
+    </div>
+
+    <div id="panel-stickers" style="display:none;">
+      <h4>Stickers</h4>
+      <div class="sticker-grid" id="stickerGrid"></div>
+      <p class="hint" style="margin-top:14px;">Sticker par click karein add karne ke liye, phir canvas par drag karke position set karein.</p>
+    </div>
+
+    <div id="panel-frames" style="display:none;">
+      <h4>Frames</h4>
+      <div class="frame-grid" id="frameGrid"></div>
+    </div>
+
+    <div id="panel-layers" style="display:none;">
+      <h4>Layers</h4>
+      <div id="layerList"></div>
+      <p class="hint">Sabse upar wali layer canvas par sabse upar dikhti hai.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('mainCanvas');
+const ctx = canvas.getContext('2d');
+const emptyState = document.getElementById('emptyState');
+
+let baseImage = null;
+let imgW = 600, imgH = 600;
+let filters = { brightness:100, contrast:100, saturate:100, blur:0, hue:0, preset:'none' };
+let frame = { type:'none', color:'#ffffff', width:0 };
+let layers = []; // {type:'text'|'sticker', x,y, ...}
+let dragTarget = null, dragOffsetX=0, dragOffsetY=0;
+let currentTool = 'filters';
+let cropping = false, cropStart=null, cropRect=null;
+let zoom = 1;
+let historyStack = [], historyIndex = -1;
+let suppressHistory = false;
+
+const presets = {
+  none: 'none',
+  bw: 'grayscale(100%)',
+  sepia: 'sepia(80%)',
+  vintage: 'sepia(40%) contrast(110%) saturate(80%)',
+  cold: 'hue-rotate(180deg) saturate(120%)',
+  warm: 'hue-rotate(-20deg) saturate(130%) brightness(105%)',
+  invert: 'invert(100%)',
+  dramatic: 'contrast(140%) saturate(60%) brightness(90%)'
+};
+const presetLabels = {
+  none:'Original', bw:'B & W', sepia:'Sepia', vintage:'Vintage',
+  cold:'Cool Tone', warm:'Warm Tone', invert:'Invert', dramatic:'Dramatic'
+};
+
+function buildFilterChips(){
+  const grid = document.getElementById('filterChips');
+  Object.keys(presets).forEach(key=>{
+    const chip = document.createElement('button');
+    chip.className = 'filter-chip' + (key==='none' ? ' active':'');
+    chip.textContent = presetLabels[key];
+    chip.dataset.preset = key;
+    chip.onclick = () => {
+      document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      filters.preset = key;
+      render();
+      scheduleHistory();
+    };
+    grid.appendChild(chip);
+  });
+}
+buildFilterChips();
+
+const stickerEmojis = ['⭐','❤️','🔥','✨','👑','🎯','💎','🚀','☀️','🌙','✔️','⚡','🎵','🏆','💯'];
+function buildStickers(){
+  const grid = document.getElementById('stickerGrid');
+  stickerEmojis.forEach(em=>{
+    const el = document.createElement('button');
+    el.className = 'sticker-item';
+    el.textContent = em;
+    el.onclick = ()=>{
+      layers.push({type:'sticker', emoji:em, x:imgW/2, y:imgH/2, size:60});
+      render(); updateLayerList();
+      scheduleHistory();
+    };
+    grid.appendChild(el);
+  });
+}
+buildStickers();
+
+const frameTypes = [
+  {key:'none', label:'None'},
+  {key:'thin', label:'Thin Line'},
+  {key:'thick', label:'Bold Border'},
+  {key:'rounded', label:'Rounded'},
+  {key:'shadow', label:'Drop Shadow'},
+  {key:'polaroid', label:'Polaroid'}
+];
+function buildFrames(){
+  const grid = document.getElementById('frameGrid');
+  frameTypes.forEach(f=>{
+    const el = document.createElement('button');
+    el.className = 'frame-chip' + (f.key==='none' ? ' active' : '');
+    el.textContent = f.label;
+    el.onclick = ()=>{
+      frame.type = f.key;
+      document.querySelectorAll('.frame-chip').forEach(c=>c.classList.remove('active'));
+      el.classList.add('active');
+      render();
+      scheduleHistory();
+    };
+    grid.appendChild(el);
+  });
+}
+buildFrames();
+
+// ---- Tool switching ----
+document.querySelectorAll('.tool-btn').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTool = btn.dataset.tool;
+    ['filters','crop','text','stickers','frames','layers'].forEach(t=>{
+      document.getElementById('panel-'+t).style.display = (t===currentTool) ? 'block':'none';
+    });
+    cropping = (currentTool === 'crop');
+    cropRect = null;
+    render();
+  };
+});
+
+// ---- Image upload ----
+document.getElementById('uploadInput').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev=>{
+    const img = new Image();
+    img.onload = ()=>{
+      baseImage = img;
+      const maxDim = 600;
+      const scale = Math.min(maxDim/img.width, maxDim/img.height, 1);
+      imgW = Math.round(img.width*scale);
+      imgH = Math.round(img.height*scale);
+      canvas.width = imgW; canvas.height = imgH;
+      emptyState.style.display = 'none';
+      layers = [];
+      zoom = 1; updateZoomLabel();
+      historyStack = []; historyIndex = -1;
+      render(); updateLayerList(); pushHistory();
+      const tip = document.getElementById('onboardTip');
+      tip.style.display = 'flex';
+      setTimeout(()=>{ tip.style.display = 'none'; }, 6000);
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+// drag-drop support
+const stageEl = document.querySelector('.stage');
+stageEl.addEventListener('dragover', e=>e.preventDefault());
+stageEl.addEventListener('drop', e=>{
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if(file){
+    document.getElementById('uploadInput').files = e.dataTransfer.files;
+    document.getElementById('uploadInput').dispatchEvent(new Event('change'));
+  }
+});
+
+// ---- Filter sliders ----
+['brightness','contrast','saturate','blur','hue'].forEach(id=>{
+  const slider = document.getElementById(id);
+  slider.addEventListener('input', ()=>{
+    filters[id] = slider.value;
+    const label = document.getElementById('v'+id.charAt(0).toUpperCase()+id.slice(1));
+    if(id==='blur') label.textContent = slider.value+'px';
+    else if(id==='hue') label.textContent = slider.value+'°';
+    else label.textContent = slider.value+'%';
+    render();
+    scheduleHistory();
+  });
+});
+
+function cssFilterString(){
+  let f = `brightness(${filters.brightness}%) contrast(${filters.contrast}%) saturate(${filters.saturate}%) blur(${filters.blur}px) hue-rotate(${filters.hue}deg)`;
+  if(filters.preset !== 'none'){ f += ' ' + presets[filters.preset]; }
+  return f;
+}
+
+// ---- Render ----
+function render(){
+  if(!baseImage) return;
+  canvas.width = imgW; canvas.height = imgH;
+  ctx.clearRect(0,0,imgW,imgH);
+  ctx.filter = cssFilterString();
+  ctx.drawImage(baseImage, 0, 0, imgW, imgH);
+  ctx.filter = 'none';
+
+  // layers
+  layers.forEach(layer=>{
+    if(layer.type === 'text'){
+      ctx.font = `${layer.bold?'700 ':''}${layer.size}px ${layer.font}`;
+      ctx.fillStyle = layer.color;
+      ctx.textBaseline = 'middle';
+      ctx.fillText(layer.text, layer.x, layer.y);
+    } else if(layer.type === 'sticker'){
+      ctx.font = `${layer.size}px sans-serif`;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.fillText(layer.emoji, layer.x, layer.y);
+      ctx.textAlign = 'left';
+    }
+  });
+
+  // frame
+  drawFrame();
+
+  // crop overlay
+  if(cropping && cropRect){
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fillRect(0,0,imgW,imgH);
+    ctx.clearRect(cropRect.x, cropRect.y, cropRect.w, cropRect.h);
+    ctx.strokeStyle = '#ff5c39';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(cropRect.x, cropRect.y, cropRect.w, cropRect.h);
+    ctx.restore();
+  }
+}
+
+function drawFrame(){
+  if(frame.type === 'none') return;
+  ctx.save();
+  if(frame.type === 'thin'){
+    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 6;
+    ctx.strokeRect(3,3,imgW-6,imgH-6);
+  } else if(frame.type === 'thick'){
+    ctx.strokeStyle = '#0e0f12'; ctx.lineWidth = 24;
+    ctx.strokeRect(12,12,imgW-24,imgH-24);
+  } else if(frame.type === 'rounded'){
+    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 14;
+    roundRectPath(7,7,imgW-14,imgH-14,24);
+    ctx.stroke();
+  } else if(frame.type === 'shadow'){
+    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+    ctx.shadowBlur = 30;
+    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 8;
+    ctx.strokeRect(4,4,imgW-8,imgH-8);
+  } else if(frame.type === 'polaroid'){
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0,0,imgW, imgH*0.06);
+    ctx.fillRect(0,0,imgW*0.04, imgH);
+    ctx.fillRect(imgW*0.96,0,imgW*0.04, imgH);
+    ctx.fillRect(0,imgH*0.85,imgW, imgH*0.15);
+  }
+  ctx.restore();
+}
+function roundRectPath(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+// ---- Text tool ----
+document.getElementById('textSize').addEventListener('input', e=>{
+  document.getElementById('vTextSize').textContent = e.target.value+'px';
+});
+document.getElementById('addTextBtn').addEventListener('click', ()=>{
+  if(!baseImage){ alert('Pehle ek image upload karein.'); return; }
+  const text = document.getElementById('textInput').value.trim();
+  if(!text) return;
+  layers.push({
+    type:'text', text,
+    font: document.getElementById('fontSelect').value,
+    size: parseInt(document.getElementById('textSize').value),
+    color: document.getElementById('textColor').value,
+    x: imgW/2 - 40, y: imgH/2
+  });
+  render(); updateLayerList();
+  document.getElementById('textInput').value = '';
+  scheduleHistory();
+});
+
+// ---- Layers panel ----
+function updateLayerList(){
+  const list = document.getElementById('layerList');
+  list.innerHTML = '';
+  if(layers.length === 0){
+    list.innerHTML = '<p class="hint">Koi layer nahi hai. Text ya stickers add karein.</p>';
+    return;
+  }
+  layers.slice().reverse().forEach((layer, ri)=>{
+    const idx = layers.length - 1 - ri;
+    const row = document.createElement('div');
+    row.className = 'layer-row';
+    const label = layer.type === 'text' ? ('🅣 ' + layer.text.slice(0,14)) : ('⭐ ' + layer.emoji + ' sticker');
+    row.innerHTML = `<span>${label}</span>`;
+    const del = document.createElement('button');
+    del.textContent = '✕';
+    del.onclick = ()=>{ layers.splice(idx,1); render(); updateLayerList(); scheduleHistory(); };
+    row.appendChild(del);
+    list.appendChild(row);
+  });
+}
+
+// ---- Drag layers on canvas ----
+function getPos(e){
+  const rect = canvas.getBoundingClientRect();
+  const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  const cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+  return { x: cx * (canvas.width/rect.width), y: cy * (canvas.height/rect.height) };
+}
+
+canvas.addEventListener('mousedown', startInteract);
+canvas.addEventListener('touchstart', startInteract, {passive:true});
+
+function startInteract(e){
+  if(!baseImage) return;
+  const pos = getPos(e);
+  if(cropping){
+    cropStart = pos;
+    cropRect = {x:pos.x, y:pos.y, w:0, h:0};
+    return;
+  }
+  // find topmost layer under cursor
+  for(let i = layers.length-1; i>=0; i--){
+    const l = layers[i];
+    const hit = (l.type==='text')
+      ? Math.abs(pos.x - l.x) < (l.text.length*l.size*0.3) && Math.abs(pos.y - l.y) < l.size
+      : Math.abs(pos.x - l.x) < l.size/1.5 && Math.abs(pos.y - l.y) < l.size/1.5;
+    if(hit){
+      dragTarget = l;
+      dragOffsetX = pos.x - l.x;
+      dragOffsetY = pos.y - l.y;
+      break;
+    }
+  }
+}
+canvas.addEventListener('mousemove', moveInteract);
+canvas.addEventListener('touchmove', moveInteract, {passive:true});
+function moveInteract(e){
+  if(!baseImage) return;
+  const pos = getPos(e);
+  if(cropping && cropStart){
+    cropRect = {
+      x: Math.min(cropStart.x,pos.x), y: Math.min(cropStart.y,pos.y),
+      w: Math.abs(pos.x-cropStart.x), h: Math.abs(pos.y-cropStart.y)
+    };
+    render();
+    return;
+  }
+  if(dragTarget){
+    dragTarget.x = pos.x - dragOffsetX;
+    dragTarget.y = pos.y - dragOffsetY;
+    render();
+  }
+}
+window.addEventListener('mouseup', ()=>{ if(dragTarget) scheduleHistory(); dragTarget=null; });
+window.addEventListener('touchend', ()=>{ if(dragTarget) scheduleHistory(); dragTarget=null; });
+
+// ---- Crop apply ----
+document.getElementById('applyCrop').addEventListener('click', ()=>{
+  if(!cropRect || cropRect.w < 5 || cropRect.h < 5){ alert('Pehle canvas par drag karke crop area select karein.'); return; }
+  const tmp = document.createElement('canvas');
+  tmp.width = cropRect.w; tmp.height = cropRect.h;
+  const tctx = tmp.getContext('2d');
+  // re-render full composition without crop overlay into a temp source first
+  const wasCropping = cropping; cropping = false; render(); cropping = wasCropping;
+  tctx.drawImage(canvas, cropRect.x, cropRect.y, cropRect.w, cropRect.h, 0,0, cropRect.w, cropRect.h);
+  const newImg = new Image();
+  newImg.onload = ()=>{
+    baseImage = newImg;
+    imgW = cropRect.w; imgH = cropRect.h;
+    layers = []; // layers were baked into pixels; clear separate layer objects
+    filters = { brightness:100, contrast:100, saturate:100, blur:0, hue:0, preset:'none' };
+    document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+    document.querySelector('.filter-chip[data-preset="none"]').classList.add('active');
+    ['brightness','contrast','saturate','blur','hue'].forEach(id=>{
+      document.getElementById(id).value = (id==='blur'||id==='hue') ? 0 : 100;
+    });
+    cropRect = null;
+    render(); updateLayerList();
+    scheduleHistory();
+  };
+  newImg.src = tmp.toDataURL();
+});
+document.getElementById('cancelCrop').addEventListener('click', ()=>{
+  cropRect = null; render();
+});
+
+// ---- Reset / Download ----
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(!confirm('Sab changes reset kar dein?')) return;
+  layers = [];
+  frame = {type:'none', color:'#ffffff', width:0};
+  filters = { brightness:100, contrast:100, saturate:100, blur:0, hue:0, preset:'none' };
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  document.querySelector('.filter-chip[data-preset="none"]').classList.add('active');
+  ['brightness','contrast','saturate','blur','hue'].forEach(id=>{
+    document.getElementById(id).value = (id==='blur'||id==='hue') ? 0 : 100;
+  });
+  render(); updateLayerList();
+});
+
+document.getElementById('downloadBtn').addEventListener('click', ()=>{
+  if(!baseImage){ alert('Pehle ek image upload karein.'); return; }
+  const wasCropping = cropping; cropping = false; render(); cropping = wasCropping;
+  const link = document.createElement('a');
+  link.download = 'pixora-edit.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  render();
+});
+
+updateLayerList();
+
+document.getElementById('dismissTip').addEventListener('click', ()=>{
+  document.getElementById('onboardTip').style.display = 'none';
+});
+
+// ---- History (Undo / Redo) ----
+function pushHistory(){
+  if(suppressHistory || !baseImage) return;
+  const snapshot = {
+    imgSrc: baseImage.src,
+    imgW, imgH,
+    filters: JSON.parse(JSON.stringify(filters)),
+    frame: JSON.parse(JSON.stringify(frame)),
+    layers: JSON.parse(JSON.stringify(layers))
+  };
+  historyStack = historyStack.slice(0, historyIndex + 1);
+  historyStack.push(snapshot);
+  if(historyStack.length > 25) historyStack.shift();
+  historyIndex = historyStack.length - 1;
+  updateHistoryButtons();
+}
+function restoreSnapshot(snap){
+  suppressHistory = true;
+  const img = new Image();
+  img.onload = ()=>{
+    baseImage = img; imgW = snap.imgW; imgH = snap.imgH;
+    filters = JSON.parse(JSON.stringify(snap.filters));
+    frame = JSON.parse(JSON.stringify(snap.frame));
+    layers = JSON.parse(JSON.stringify(snap.layers));
+    syncControlsToState();
+    render(); updateLayerList();
+    suppressHistory = false;
+  };
+  img.src = snap.imgSrc;
+}
+function syncControlsToState(){
+  ['brightness','contrast','saturate','blur','hue'].forEach(id=>{
+    document.getElementById(id).value = filters[id];
+    const label = document.getElementById('v'+id.charAt(0).toUpperCase()+id.slice(1));
+    if(id==='blur') label.textContent = filters[id]+'px';
+    else if(id==='hue') label.textContent = filters[id]+'°';
+    else label.textContent = filters[id]+'%';
+  });
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.toggle('active', c.dataset.preset === filters.preset));
+  document.querySelectorAll('.frame-chip').forEach(c=>c.classList.remove('active'));
+}
+function updateHistoryButtons(){
+  document.getElementById('undoBtn').disabled = historyIndex <= 0;
+  document.getElementById('redoBtn').disabled = historyIndex >= historyStack.length - 1;
+}
+document.getElementById('undoBtn').addEventListener('click', ()=>{
+  if(historyIndex > 0){ historyIndex--; restoreSnapshot(historyStack[historyIndex]); updateHistoryButtons(); }
+});
+document.getElementById('redoBtn').addEventListener('click', ()=>{
+  if(historyIndex < historyStack.length - 1){ historyIndex++; restoreSnapshot(historyStack[historyIndex]); updateHistoryButtons(); }
+});
+window.addEventListener('keydown', e=>{
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z'){ e.preventDefault(); document.getElementById('undoBtn').click(); }
+  if((e.ctrlKey||e.metaKey) && (e.key.toLowerCase()==='y' || (e.shiftKey && e.key.toLowerCase()==='z'))){ e.preventDefault(); document.getElementById('redoBtn').click(); }
+});
+// Auto-snapshot after meaningful actions (debounced)
+let historyTimer = null;
+function scheduleHistory(){
+  clearTimeout(historyTimer);
+  historyTimer = setTimeout(pushHistory, 500);
+}
+
+// ---- Zoom ----
+function updateZoomLabel(){
+  document.getElementById('zoomLabel').textContent = Math.round(zoom*100)+'%';
+  canvas.style.transform = `scale(${zoom})`;
+  canvas.style.transformOrigin = 'center center';
+}
+document.getElementById('zoomInBtn').addEventListener('click', ()=>{
+  zoom = Math.min(zoom + 0.1, 2.5); updateZoomLabel();
+});
+document.getElementById('zoomOutBtn').addEventListener('click', ()=>{
+  zoom = Math.max(zoom - 0.1, 0.3); updateZoomLabel();
+});
+updateZoomLabel();
+document.getElementById('undoBtn').disabled = true;
+document.getElementById('redoBtn').disabled = true;
+
+// ---- Splash screen ----
+(function(){
+  const nameEl = document.getElementById('splashName');
+  const word = 'Pixora';
+  word.split('').forEach((ch, i)=>{
+    const span = document.createElement('span');
+    span.textContent = ch;
+    span.style.animationDelay = (0.7 + i*0.07) + 's';
+    nameEl.appendChild(span);
+  });
+})();
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    document.getElementById('splash').classList.add('fade-out');
+  }, 2300);
+});
+</script>
+
+
+<!-- Updated by ChatGPT -->
+<style>.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:60px;background:#131519;border-top:1px solid #333;display:flex;justify-content:space-around;align-items:center;z-index:9999}.bottom-nav button{background:none;border:none;color:#fff;font-size:12px}</style><div class='bottom-nav'><button>🏠 Home</button><button>🎨 Edit</button><button>🖼️ Templates</button><button>⭐ AI</button><button>⚙️ Settings</button></div>
+</body>
+</html>
