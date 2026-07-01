@@ -409,10 +409,61 @@
     .panel{position:fixed; right:0; top:56px; bottom:0; width:260px; transform:translateX(100%); transition:transform .25s; z-index:30;}
     .panel.open{transform:translateX(0);}
   }
-</style>
+</style>/* ===== App Content Safe Area ===== */
+
+body{
+    padding-bottom:75px;
+}
+
+#splash,
+.app,
+.main,
+.editor,
+.canvas-wrap{
+    padding-bottom:75px;
+}
 </head>
 <body>
-<div class="bottom-nav">
+<div class="bottom-nav">/* ==========================
+   Pixora Pro Bottom Navigation
+========================== */
+
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:68px;
+    background:#17181d;
+    border-top:1px solid rgba(255,255,255,.08);
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    z-index:9999;
+}
+
+.nav-item{
+    flex:1;
+    height:100%;
+    background:none;
+    border:none;
+    color:#9aa0a6;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.nav-item span{
+    font-size:11px;
+    margin-top:4px;
+}
+
+.nav-item.active{
+    color:#58bdef;
+}
     <button class="nav-item active" id="homeTab">
         🏠
         <span>Home</span>
@@ -1129,7 +1180,18 @@ window.addEventListener('load', ()=>{
 </script>
 
 
-<!-- Updated by ChatGPT -->
-<style>.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:60px;background:#131519;border-top:1px solid #333;display:flex;justify-content:space-around;align-items:center;z-index:9999}.bottom-nav button{background:none;border:none;color:#fff;font-size:12px}</style><div class='bottom-nav'><button>🏠 Home</button><button>🎨 Edit</button><button>🖼️ Templates</button><button>⭐ AI</button><button>⚙️ Settings</button></div>
 </body>
+ <script>
+const navItems = document.querySelectorAll(".nav-item");
+
+navItems.forEach(item=>{
+    item.addEventListener("click",()=>{
+
+        navItems.forEach(btn=>btn.classList.remove("active"));
+
+        item.classList.add("active");
+
+    });
+});
+</script>
 </html>
