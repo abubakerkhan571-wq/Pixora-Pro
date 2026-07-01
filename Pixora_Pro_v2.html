@@ -365,7 +365,7 @@
   .splash-name span{
     opacity:0;
     display:inline-block;
-    transform:translateY(10px);
+    transform:translateY(hi10px);
     animation:letterIn .45s cubic-bezier(.2,.9,.3,1) forwards;
   }
   @keyframes letterIn{0%{opacity:0; transform:translateY(10px);} 100%{opacity:1; transform:translateY(0);}}
@@ -479,7 +479,7 @@ body{
         <span>Text</span>
     </button>
 
-    <button class="nav-item" id="aiTab">
+    <button class="nav-item" id="aiTab" onclick="openAIPanel()">
         ✨
         <span>AI</span>
     </button>
@@ -1192,6 +1192,9 @@ navItems.forEach(item=>{
         item.classList.add("active");
 
     });
-});
+}); 
+function openAIPanel(){
+  alert("🚀 Pixora AI v2.1\n\nComing in Build 003");
+}
 </script>
 </html>
