@@ -85,3 +85,89 @@ body{
     background:#111315;
 
 }
+/* ===================================
+   Build 002 - Splash Design
+=================================== */
+
+.logoBox{
+
+    position:relative;
+
+    width:120px;
+    height:120px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+
+.logoGlow{
+
+    position:absolute;
+
+    width:120px;
+    height:120px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(circle,
+    rgba(77,163,255,.35),
+    transparent 70%);
+
+    filter:blur(18px);
+
+}
+
+.logo{
+
+    width:80px;
+    height:80px;
+
+    border-radius:24px;
+
+    background:
+    linear-gradient(135deg,
+    #4ea8ff,
+    #7a5cff);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:42px;
+    font-weight:700;
+
+    color:#fff;
+
+    position:relative;
+
+    z-index:2;
+
+    box-shadow:
+    0 0 30px rgba(78,168,255,.45);
+
+}
+
+.appTitle{
+
+    margin-top:28px;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+}
+
+.appTag{
+
+    margin-top:10px;
+
+    color:#a7a7a7;
+
+    font-size:16px;
+
+}
