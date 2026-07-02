@@ -35,3 +35,53 @@ body{
     justify-content:center;
     align-items:center;
 }
+/* ===================================
+   Build 002 - Screen Layout
+=================================== */
+
+#splashScreen,
+#loginScreen,
+#homeScreen,
+#editorScreen{
+
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    display:none;
+
+    overflow:hidden;
+
+}
+
+#splashScreen{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+
+    background:
+    linear-gradient(135deg,#0b0b0d,#18191f);
+
+}
+
+#loginScreen{
+
+    background:#0b0b0d;
+
+}
+
+#homeScreen{
+
+    background:#0b0b0d;
+
+}
+
+#editorScreen{
+
+    background:#111315;
+
+}
