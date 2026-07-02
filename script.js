@@ -40,3 +40,29 @@ document.addEventListener("DOMContentLoaded", () => {
     Pixora.init();
 
 });
+/* ===================================
+   Build 002 - Part 5
+   Screen Controller
+=================================== */
+
+const splashScreen = document.getElementById("splashScreen");
+const loginScreen = document.getElementById("loginScreen");
+const homeScreen = document.getElementById("homeScreen");
+const editorScreen = document.getElementById("editorScreen");
+
+function hideAllScreens(){
+
+    splashScreen.style.display = "none";
+    loginScreen.style.display = "none";
+    homeScreen.style.display = "none";
+    editorScreen.style.display = "none";
+
+}
+
+function openScreen(screen){
+
+    hideAllScreens();
+
+    screen.style.display = "flex";
+
+   }
