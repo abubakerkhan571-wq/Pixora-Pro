@@ -1121,17 +1121,9 @@ function scheduleHistory(){
 
 // ---- Zoom ----
 function updateZoomLabel(){
-  document.getElementById('zoomLabel').textContent = Math.round(zoom*100)+'%';
   canvas.style.transform = `scale(${zoom})`;
   canvas.style.transformOrigin = 'center center';
 }
-document.getElementById('zoomInBtn').addEventListener('click', ()=>{
-  zoom = Math.min(zoom + 0.1, 2.5); updateZoomLabel();
-});
-document.getElementById('zoomOutBtn').addEventListener('click', ()=>{
-  zoom = Math.max(zoom - 0.1, 0.3); updateZoomLabel();
-});
-updateZoomLabel();
 document.getElementById('undoBtn').disabled = true;
 document.getElementById('redoBtn').disabled = true;
 
