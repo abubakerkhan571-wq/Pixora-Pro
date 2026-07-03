@@ -126,3 +126,45 @@ if (guestBtn) {
 /* ===================================
    Build 007 - AI Controller
 =================================== */
+// ===================================
+// IMAGE IMPORT CONTROLLER
+// ===================================
+
+const imagePicker = document.getElementById("imagePicker");
+const editorImage = document.getElementById("editorImage");
+const toolImage = document.getElementById("toolImage");
+
+if (toolImage && imagePicker && editorImage) {
+
+    toolImage.addEventListener("click", () => {
+
+        imagePicker.click();
+
+    });
+
+    imagePicker.addEventListener("change", (event) => {
+
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            editorImage.src = e.target.result;
+
+            editorImage.style.display = "block";
+
+        };
+
+        reader.readAsDataURL(file);
+
+    });
+#editorImage{
+    max-width:100%;
+    max-height:100%;
+    display:none;
+    border-radius:16px;
+                                 }
+}
