@@ -66,3 +66,35 @@ function openScreen(screen){
     screen.style.display = "flex";
 
    }
+/*====================================
+ Build 003 - Splash Controller
+====================================*/
+
+function startSplash(){
+
+    const splash =
+    document.getElementById("splashScreen");
+
+    const login =
+    document.getElementById("loginScreen");
+
+    setTimeout(()=>{
+
+        splash.style.opacity="0";
+
+        splash.style.transition=
+        "0.6s";
+
+        setTimeout(()=>{
+
+            splash.style.display="none";
+
+            login.style.display="flex";
+
+        },600);
+
+    },2500);
+
+}
+
+window.addEventListener("load",startSplash);
