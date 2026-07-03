@@ -411,3 +411,30 @@ body{
     color:#fff;
     font-size:22px;
 }
+/*====================================
+ Build 006 - Pro Badge
+====================================*/
+
+.proBadge{
+    padding:6px 12px;
+    border-radius:999px;
+    background:linear-gradient(135deg,#FFD54A,#FF9800);
+    color:#111;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1px;
+    box-shadow:0 0 14px rgba(255,193,7,.35);
+    animation:proGlow 2s infinite;
+}
+
+@keyframes proGlow{
+    0%,100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    50%{
+        transform:scale(1.08);
+        opacity:.9;
+    }
+}
