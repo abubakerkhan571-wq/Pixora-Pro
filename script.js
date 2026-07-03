@@ -7,6 +7,10 @@
 // Pixora Pro Main Controllers
 // ===================================
 
+// ===================================
+// SCREEN CONTROLLER
+// ===================================
+
 /* ===================================
    Build 002 - Part 5
    Screen Controller
@@ -33,6 +37,10 @@ function openScreen(screen){
     screen.style.display = "flex";
 
    }
+// ===================================
+// SPLASH CONTROLLER
+// ===================================
+
 /*====================================
  Build 003 - Splash Controller
 ====================================*/
@@ -65,6 +73,10 @@ function startSplash(){
 }
 
 window.addEventListener("load",startSplash);
+// ===================================
+// LOGIN CONTROLLER
+// ===================================
+
 /*====================================
  Build 004 - Login Buttons
 ====================================*/
