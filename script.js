@@ -161,10 +161,3 @@ if (toolImage && imagePicker && editorImage) {
         reader.readAsDataURL(file);
 
     });
-#editorImage{
-    max-width:100%;
-    max-height:100%;
-    display:none;
-    border-radius:16px;
-                                 }
-}
