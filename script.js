@@ -98,3 +98,31 @@ function startSplash(){
 }
 
 window.addEventListener("load",startSplash);
+/*====================================
+ Build 004 - Login Buttons
+====================================*/
+
+const googleBtn = document.getElementById("googleLoginBtn");
+const guestBtn = document.getElementById("guestLoginBtn");
+
+if (googleBtn) {
+
+    googleBtn.addEventListener("click", () => {
+
+        alert("Google Login will be connected in Build 005");
+
+    });
+
+}
+
+if (guestBtn) {
+
+    guestBtn.addEventListener("click", () => {
+
+        document.getElementById("loginScreen").style.display = "none";
+
+        document.getElementById("homeScreen").style.display = "flex";
+
+    });
+
+}
