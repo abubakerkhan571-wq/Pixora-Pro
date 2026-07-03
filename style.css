@@ -438,3 +438,62 @@ body{
         opacity:.9;
     }
 }
+/*====================================
+ Build 007 - Editor UI
+====================================*/
+
+#editorScreen{
+    display:none;
+    flex-direction:column;
+    width:100%;
+    height:100%;
+    background:#0b0b0d;
+}
+
+.editorTopBar{
+    height:60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 16px;
+    background:#17181d;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.editorTopBar h2{
+    font-size:18px;
+    font-weight:600;
+}
+
+.editorTopBar button{
+    border:none;
+    background:#1d1f27;
+    color:#fff;
+    padding:10px 16px;
+    border-radius:12px;
+}
+
+#editorCanvas{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#8f98ad;
+    font-size:16px;
+}
+
+.editorBottomBar{
+    height:70px;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    background:#17181d;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.editorBottomBar button{
+    border:none;
+    background:none;
+    color:#fff;
+    font-size:15px;
+}
