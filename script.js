@@ -152,11 +152,20 @@ if (toolImage && imagePicker && editorImage) {
 
         reader.onload = function(e){
 
-            editorImage.src = e.target.result;
+    editorImage.src = e.target.result;
 
-            editorImage.style.display = "block";
+    editorImage.style.display = "block";
 
-        };
+    currentX = 0;
+    currentY = 0;
+
+    currentScale = 1;
+
+    currentRotation = 0;
+
+    updateTransform();
+
+};
 
         reader.readAsDataURL(file);
 
