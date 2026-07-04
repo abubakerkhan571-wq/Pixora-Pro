@@ -207,3 +207,45 @@ function setupHomeEvents(){
     }
 
 }
+// ===================================
+// Build 016 - Image Drag System
+// ===================================
+
+let currentX = 0;
+let currentY = 0;
+
+let startX = 0;
+let startY = 0;
+
+let dragging = false;
+
+editorImage.addEventListener("pointerdown",(e)=>{
+
+dragging = true;
+
+startX = e.clientX-currentX;
+startY = e.clientY-currentY;
+
+editorImage.style.cursor="grabbing";
+
+});
+
+window.addEventListener("pointermove",(e)=>{
+
+if(!dragging) return;
+
+currentX = e.clientX-startX;
+currentY = e.clientY-startY;
+
+editorImage.style.transform =
+`translate(${currentX}px,${currentY}px)`;
+
+});
+
+window.addEventListener("pointerup",()=>{
+
+dragging = false;
+
+editorImage.style.cursor="grab";
+
+});
