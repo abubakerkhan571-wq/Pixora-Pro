@@ -1010,3 +1010,42 @@ setTimeout(saveHistory,50);
 });
 
 }
+// ===================================
+// Build 048 - Undo Redo
+// ===================================
+
+const undoBtn =
+document.getElementById("undoBtn");
+
+const redoBtn =
+document.getElementById("redoBtn");
+
+if(undoBtn){
+
+undoBtn.addEventListener("click",()=>{
+
+if(historyIndex<=0) return;
+
+historyIndex--;
+
+editorCanvas.innerHTML =
+historyStack[historyIndex];
+
+});
+
+}
+
+if(redoBtn){
+
+redoBtn.addEventListener("click",()=>{
+
+if(historyIndex>=historyStack.length-1) return;
+
+historyIndex++;
+
+editorCanvas.innerHTML =
+historyStack[historyIndex];
+
+});
+
+   }
