@@ -831,3 +831,46 @@ activeText.style.fontStyle==="italic"
 });
 
 }
+// ===================================
+// Build 043 - Bold & Italic
+// ===================================
+
+const boldTextBtn =
+document.getElementById("boldTextBtn");
+
+const italicTextBtn =
+document.getElementById("italicTextBtn");
+
+if(boldTextBtn){
+
+boldTextBtn.addEventListener("click",()=>{
+
+if(activeText){
+
+activeText.style.fontWeight =
+activeText.style.fontWeight==="bold"
+? "normal"
+: "bold";
+
+}
+
+});
+
+}
+
+if(italicTextBtn){
+
+italicTextBtn.addEventListener("click",()=>{
+
+if(activeText){
+
+activeText.style.fontStyle =
+activeText.style.fontStyle==="italic"
+? "normal"
+: "italic";
+
+}
+
+});
+
+}
