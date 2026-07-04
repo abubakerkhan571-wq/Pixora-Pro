@@ -163,3 +163,18 @@ if (toolImage && imagePicker && editorImage) {
     });
 
 }
+// ===================================
+// Build 008 - Photo Editor Navigation
+// ===================================
+
+const photoEditorCard = document.getElementById("photoEditorCard");
+
+if (photoEditorCard) {
+
+    photoEditorCard.addEventListener("click", () => {
+
+        openScreen(editorScreen);
+
+    });
+
+}
