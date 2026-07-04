@@ -1524,3 +1524,14 @@ transition:.25s;
 background:#e53935;
 
 }
+/* ===================================
+Build 045 - Selected Text
+=================================== */
+
+.editorText.selected{
+
+outline:2px dashed #6d7cff;
+
+outline-offset:6px;
+
+}
