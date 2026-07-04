@@ -729,3 +729,106 @@ transform:scale(1);
 }
 
    }
+/* ===================================
+Build 014 - Premium Home Animations
+=================================== */
+
+.appTitle{
+
+background:linear-gradient(90deg,#ffffff,#69a8ff,#9c73ff,#ffffff);
+
+background-size:300%;
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+animation:titleFlow 6s linear infinite;
+
+}
+
+@keyframes titleFlow{
+
+0%{
+
+background-position:0%;
+
+}
+
+100%{
+
+background-position:300%;
+
+}
+
+}
+
+.toolCard{
+
+cursor:pointer;
+
+}
+
+.toolCard:active{
+
+transform:scale(.96);
+
+transition:.15s;
+
+}
+
+.bottomNav{
+
+position:fixed;
+
+bottom:20px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+width:92%;
+
+max-width:420px;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+-webkit-backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.10);
+
+border-radius:28px;
+
+padding:12px;
+
+display:flex;
+
+justify-content:space-around;
+
+box-shadow:0 12px 35px rgba(0,0,0,.35);
+
+}
+
+.bottomNav button{
+
+background:none;
+
+border:none;
+
+color:white;
+
+font-size:26px;
+
+transition:.3s;
+
+}
+
+.bottomNav button:hover{
+
+transform:translateY(-5px) scale(1.15);
+
+color:#7ca8ff;
+
+}
