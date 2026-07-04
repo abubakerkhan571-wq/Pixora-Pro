@@ -725,3 +725,24 @@ window.addEventListener("pointerup",()=>{
 activeText = null;
 
 });
+// ===================================
+// Build 041 - Text Color
+// ===================================
+
+const textColor =
+document.getElementById("textColor");
+
+if(textColor){
+
+textColor.addEventListener("input",()=>{
+
+if(activeText){
+
+activeText.style.color =
+textColor.value;
+
+}
+
+});
+
+}
