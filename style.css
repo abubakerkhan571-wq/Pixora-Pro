@@ -1562,3 +1562,34 @@ font-weight:bold;
 cursor:pointer;
 
 }
+/* ===================================
+Build 048 - Undo Redo
+=================================== */
+
+#editorActions{
+
+display:flex;
+
+gap:8px;
+
+}
+
+#editorActions button{
+
+width:42px;
+
+height:42px;
+
+border:none;
+
+border-radius:12px;
+
+background:#2d2f39;
+
+color:white;
+
+font-size:20px;
+
+cursor:pointer;
+
+}
