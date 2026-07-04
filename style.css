@@ -1235,3 +1235,64 @@ color:white;
 font-size:15px;
 
 }
+/* ===================================
+Build 038 - Text Panel
+=================================== */
+
+#textPanel{
+
+position:fixed;
+
+left:0;
+
+right:0;
+
+bottom:90px;
+
+padding:18px;
+
+display:none;
+
+background:rgba(18,18,22,.96);
+
+backdrop-filter:blur(20px);
+
+border-top-left-radius:24px;
+
+border-top-right-radius:24px;
+
+z-index:999;
+
+}
+
+#textPanel input{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+margin-bottom:12px;
+
+}
+
+#textPanel button{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+background:#6d7cff;
+
+color:white;
+
+font-weight:bold;
+
+}
