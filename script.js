@@ -767,3 +767,24 @@ textSize.value+"px";
 });
 
 }
+// ===================================
+// Build 042 - Text Size Controller
+// ===================================
+
+const textSize =
+document.getElementById("textSize");
+
+if(textSize){
+
+    textSize.addEventListener("input",()=>{
+
+        if(activeText){
+
+            activeText.style.fontSize =
+            textSize.value + "px";
+
+        }
+
+    });
+
+}
