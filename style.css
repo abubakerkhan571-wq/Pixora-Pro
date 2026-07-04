@@ -1059,3 +1059,44 @@ backdrop-filter:blur(12px);
 border:1px solid rgba(255,255,255,.08);
 
 }
+/* ===================================
+Build 027 - Premium Card Glow
+=================================== */
+
+.toolCard{
+
+transition:.35s ease;
+
+}
+
+.toolCard:hover{
+
+transform:translateY(-10px) scale(1.03);
+
+border:1px solid rgba(120,140,255,.45);
+
+box-shadow:
+
+0 0 25px rgba(90,120,255,.30),
+
+0 0 60px rgba(140,90,255,.20);
+
+}
+
+.plusCircle{
+
+transition:.35s;
+
+}
+
+.toolCard:hover .plusCircle{
+
+transform:scale(1.12) rotate(90deg);
+
+box-shadow:
+
+0 0 20px #5b6cff,
+
+0 0 45px #8d4dff;
+
+}
