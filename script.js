@@ -746,3 +746,24 @@ textColor.value;
 });
 
 }
+// ===================================
+// Build 042 - Text Size
+// ===================================
+
+const textSize =
+document.getElementById("textSize");
+
+if(textSize){
+
+textSize.addEventListener("input",()=>{
+
+if(activeText){
+
+activeText.style.fontSize =
+textSize.value+"px";
+
+}
+
+});
+
+}
