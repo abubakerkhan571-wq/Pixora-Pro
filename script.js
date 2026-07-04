@@ -365,3 +365,27 @@ updateFilters();
 };
 
 }
+// ===================================
+// Build 028 - Filter Panel Toggle
+// ===================================
+
+const filterButton = document.getElementById("toolFilter");
+const filterPanel = document.getElementById("filterPanel");
+
+if (filterButton && filterPanel) {
+
+    filterButton.addEventListener("click", () => {
+
+        if (filterPanel.style.display === "block") {
+
+            filterPanel.style.display = "none";
+
+        } else {
+
+            filterPanel.style.display = "block";
+
+        }
+
+    });
+
+}
