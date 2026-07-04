@@ -331,3 +331,37 @@ function updateFilters(){
      saturate(${saturate}%)`;
 
 }
+// ===================================
+// Build 022 - Brightness Slider
+// ===================================
+
+const toolFilter =
+document.getElementById("toolFilter");
+
+const filterPanel =
+document.getElementById("filterPanel");
+
+const brightnessSlider =
+document.getElementById("brightnessSlider");
+
+if(toolFilter){
+
+toolFilter.onclick=()=>{
+
+filterPanel.style.display="block";
+
+};
+
+}
+
+if(brightnessSlider){
+
+brightnessSlider.oninput=(e)=>{
+
+brightness=parseInt(e.target.value);
+
+updateFilters();
+
+};
+
+}
