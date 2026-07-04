@@ -874,3 +874,25 @@ activeText.style.fontStyle==="italic"
 });
 
 }
+// ===================================
+// Build 044 - Delete Text
+// ===================================
+
+const deleteTextBtn =
+document.getElementById("deleteTextBtn");
+
+if(deleteTextBtn){
+
+deleteTextBtn.addEventListener("click",()=>{
+
+if(activeText){
+
+activeText.remove();
+
+activeText = null;
+
+}
+
+});
+
+}
