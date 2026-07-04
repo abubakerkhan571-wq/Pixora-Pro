@@ -928,3 +928,46 @@ transform-origin:center center;
 transition:transform .25s ease;
 
 }
+/* ===================================
+Build 022 - Filter Panel
+=================================== */
+
+#filterPanel{
+
+position:fixed;
+
+left:0;
+
+right:0;
+
+bottom:95px;
+
+padding:18px;
+
+background:rgba(20,20,20,.92);
+
+display:none;
+
+border-top-left-radius:22px;
+
+border-top-right-radius:22px;
+
+}
+
+#filterPanel label{
+
+display:block;
+
+margin-bottom:12px;
+
+color:white;
+
+font-weight:600;
+
+}
+
+#filterPanel input{
+
+width:100%;
+
+}
