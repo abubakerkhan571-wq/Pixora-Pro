@@ -249,3 +249,31 @@ dragging = false;
 editorImage.style.cursor="grab";
 
 });
+// ===================================
+// Build 017 - Pinch Zoom System
+// ===================================
+
+let currentScale = 1;
+
+editorImage.addEventListener("wheel",(e)=>{
+
+e.preventDefault();
+
+if(e.deltaY<0){
+
+currentScale +=0.05;
+
+}else{
+
+currentScale -=0.05;
+
+}
+
+if(currentScale<0.3) currentScale=0.3;
+
+if(currentScale>5) currentScale=5;
+
+editorImage.style.transform =
+`translate(${currentX}px,${currentY}px) scale(${currentScale})`;
+
+});
