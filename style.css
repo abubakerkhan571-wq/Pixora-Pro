@@ -1186,3 +1186,52 @@ width:100%;
 accent-color:#6d7cff;
 
 }
+/* ===================================
+Build 036 - Effects Panel
+=================================== */
+
+#effectsPanel{
+
+position:fixed;
+
+left:0;
+
+right:0;
+
+bottom:90px;
+
+padding:18px;
+
+display:none;
+
+background:rgba(18,18,22,.96);
+
+backdrop-filter:blur(20px);
+
+border-top-left-radius:24px;
+
+border-top-right-radius:24px;
+
+z-index:999;
+
+}
+
+#effectsPanel button{
+
+width:100%;
+
+margin-top:10px;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+background:#2d2f39;
+
+color:white;
+
+font-size:15px;
+
+}
