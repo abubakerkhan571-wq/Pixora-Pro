@@ -917,3 +917,14 @@ transition:
 transform .12s linear;
 
 }
+/* ===================================
+Build 018 - Smooth Rotate
+=================================== */
+
+#editorImage{
+
+transform-origin:center center;
+
+transition:transform .25s ease;
+
+}
