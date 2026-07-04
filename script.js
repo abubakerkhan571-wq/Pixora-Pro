@@ -164,7 +164,7 @@ if (toolImage && imagePicker && editorImage) {
     currentRotation = 0;
 
     updateTransform();
-
+    updateFilters();
 };
 
         reader.readAsDataURL(file);
@@ -313,5 +313,21 @@ function updateTransform(){
     `translate(${currentX}px,${currentY}px)
      scale(${currentScale})
      rotate(${currentRotation}deg)`;
+
+}
+// ===================================
+// Build 021 - Filter Engine
+// ===================================
+
+let brightness = 100;
+let contrast = 100;
+let saturate = 100;
+
+function updateFilters(){
+
+    editorImage.style.filter =
+    `brightness(${brightness}%)
+     contrast(${contrast}%)
+     saturate(${saturate}%)`;
 
 }
