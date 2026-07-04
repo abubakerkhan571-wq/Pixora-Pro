@@ -456,3 +456,30 @@ if(brightnessSlider){
     });
 
 }
+// ===================================
+// Build 033 - Filter Panel Controller
+// ===================================
+
+const toolFilter =
+document.getElementById("toolFilter");
+
+const filterPanel =
+document.getElementById("filterPanel");
+
+if(toolFilter && filterPanel){
+
+    toolFilter.addEventListener("click",()=>{
+
+        if(filterPanel.style.display==="block"){
+
+            filterPanel.style.display="none";
+
+        }else{
+
+            filterPanel.style.display="block";
+
+        }
+
+    });
+
+}
