@@ -635,3 +635,97 @@ transform:scale(1.1);
 box-shadow:0 0 40px rgba(120,140,255,.8);
 
 }
+/* ===================================
+Build 013 - Premium Glass Cards
+=================================== */
+
+.toolCard{
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+-webkit-backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.12);
+
+border-radius:24px;
+
+transition:.35s;
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+.toolCard::before{
+
+content:"";
+
+position:absolute;
+
+top:-60%;
+
+left:-60%;
+
+width:220%;
+
+height:220%;
+
+background:linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,.08),
+transparent
+);
+
+transform:rotate(25deg);
+
+transition:.6s;
+
+}
+
+.toolCard:hover::before{
+
+left:100%;
+
+}
+
+.toolCard:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 20px 45px rgba(0,0,0,.35);
+
+}
+
+.plusCircle{
+
+animation:pulseGlow 2s infinite;
+
+}
+
+@keyframes pulseGlow{
+
+0%{
+
+transform:scale(1);
+
+}
+
+50%{
+
+transform:scale(1.08);
+
+box-shadow:0 0 35px rgba(120,140,255,.9);
+
+}
+
+100%{
+
+transform:scale(1);
+
+}
+
+   }
