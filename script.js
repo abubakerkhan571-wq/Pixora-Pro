@@ -648,3 +648,35 @@ textPanel.style.display="block";
 });
 
 }
+// ===================================
+// Build 039 - Add Text
+// ===================================
+
+const addTextBtn =
+document.getElementById("addTextBtn");
+
+const textInput =
+document.getElementById("textInput");
+
+const editorCanvas =
+document.getElementById("editorCanvas");
+
+if(addTextBtn){
+
+addTextBtn.addEventListener("click",()=>{
+
+if(textInput.value.trim()==="") return;
+
+const text=document.createElement("div");
+
+text.className="editorText";
+
+text.innerText=textInput.value;
+
+editorCanvas.appendChild(text);
+
+textInput.value="";
+
+});
+
+}
