@@ -621,3 +621,30 @@ editorImage.style.filter=
 };
 
 }
+// ===================================
+// Build 038 - Text Panel
+// ===================================
+
+const toolText =
+document.getElementById("toolText");
+
+const textPanel =
+document.getElementById("textPanel");
+
+if(toolText && textPanel){
+
+toolText.addEventListener("click",()=>{
+
+if(textPanel.style.display==="block"){
+
+textPanel.style.display="none";
+
+}else{
+
+textPanel.style.display="block";
+
+}
+
+});
+
+}
