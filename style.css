@@ -1131,3 +1131,58 @@ transform:translateY(0);
 }
 
 }
+/* ===================================
+Build 031 - Filter Panel UI
+=================================== */
+
+#filterPanel{
+
+position:fixed;
+
+left:0;
+
+right:0;
+
+bottom:90px;
+
+padding:18px;
+
+background:rgba(18,18,22,.96);
+
+backdrop-filter:blur(20px);
+
+-webkit-backdrop-filter:blur(20px);
+
+border-top-left-radius:24px;
+
+border-top-right-radius:24px;
+
+display:none;
+
+z-index:999;
+
+}
+
+#filterPanel label{
+
+display:block;
+
+color:#ffffff;
+
+font-size:15px;
+
+font-weight:600;
+
+margin-top:12px;
+
+margin-bottom:8px;
+
+}
+
+#filterPanel input[type="range"]{
+
+width:100%;
+
+accent-color:#6d7cff;
+
+}
