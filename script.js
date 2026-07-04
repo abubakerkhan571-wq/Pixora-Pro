@@ -963,3 +963,50 @@ editorCanvas.appendChild(copy);
 });
 
 }
+// ===================================
+// Build 047 - History System
+// ===================================
+
+let historyStack = [];
+
+let historyIndex = -1;
+
+function saveHistory(){
+
+historyStack =
+historyStack.slice(0,historyIndex+1);
+
+historyStack.push(editorCanvas.innerHTML);
+
+historyIndex++;
+
+}
+// ===================================
+// Build 047 - Save States
+// ===================================
+
+editorCanvas.addEventListener("pointerup",()=>{
+
+saveHistory();
+
+});
+
+if(addTextBtn){
+
+addTextBtn.addEventListener("click",()=>{
+
+setTimeout(saveHistory,50);
+
+});
+
+}
+
+if(deleteTextBtn){
+
+deleteTextBtn.addEventListener("click",()=>{
+
+setTimeout(saveHistory,50);
+
+});
+
+}
