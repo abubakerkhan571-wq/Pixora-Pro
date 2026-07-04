@@ -1342,3 +1342,22 @@ border-radius:12px;
 background:none;
 
 }
+#textPanel label{
+
+display:block;
+
+margin-top:14px;
+
+margin-bottom:8px;
+
+color:white;
+
+font-weight:600;
+
+}
+
+#textSize{
+
+width:100%;
+
+}
