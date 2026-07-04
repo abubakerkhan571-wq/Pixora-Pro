@@ -176,9 +176,28 @@ window.addEventListener("load", () => {
         photoEditorCard.addEventListener("click", () => {
 
             openScreen(editorScreen);
-
+            setupHomeEvents();
         });
 
     }
 
 });
+// ===================================
+// HOME EVENTS
+// ===================================
+
+function setupHomeEvents(){
+
+    const photoEditorCard = document.getElementById("photoEditorCard");
+
+    if(photoEditorCard){
+
+        photoEditorCard.onclick = function(){
+
+            openScreen(editorScreen);
+
+        };
+
+    }
+
+}
