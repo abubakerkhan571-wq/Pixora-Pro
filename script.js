@@ -277,3 +277,23 @@ editorImage.style.transform =
 `translate(${currentX}px,${currentY}px) scale(${currentScale})`;
 
 });
+// ===================================
+// Build 018 - Rotate System
+// ===================================
+
+let currentRotation = 0;
+
+const toolEffects = document.getElementById("toolEffects");
+
+if(toolEffects){
+
+    toolEffects.addEventListener("click",()=>{
+
+        currentRotation += 90;
+
+        editorImage.style.transform =
+        `translate(${currentX}px,${currentY}px) scale(${currentScale}) rotate(${currentRotation}deg)`;
+
+    });
+
+}
