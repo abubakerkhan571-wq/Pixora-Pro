@@ -161,3 +161,5 @@ if (toolImage && imagePicker && editorImage) {
         reader.readAsDataURL(file);
 
     });
+
+}
