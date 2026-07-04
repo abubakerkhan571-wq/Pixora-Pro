@@ -167,14 +167,18 @@ if (toolImage && imagePicker && editorImage) {
 // Build 008 - Photo Editor Navigation
 // ===================================
 
-const photoEditorCard = document.getElementById("photoEditorCard");
+window.addEventListener("load", () => {
 
-if (photoEditorCard) {
+    const photoEditorCard = document.getElementById("photoEditorCard");
 
-    photoEditorCard.addEventListener("click", () => {
+    if (photoEditorCard) {
 
-        openScreen(editorScreen);
+        photoEditorCard.addEventListener("click", () => {
 
-    });
+            openScreen(editorScreen);
 
-}
+        });
+
+    }
+
+});
