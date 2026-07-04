@@ -971,3 +971,27 @@ font-weight:600;
 width:100%;
 
 }
+.toolCard{
+    position:relative;
+    overflow:hidden;
+}
+
+.toolCard::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.05),
+        rgba(255,255,255,0)
+    );
+    pointer-events:none;
+}
+
+.toolCard:hover{
+    transform:translateY(-8px);
+    transition:.35s;
+    box-shadow:
+    0 20px 45px rgba(80,120,255,.25),
+    0 0 35px rgba(130,90,255,.18);
+}
