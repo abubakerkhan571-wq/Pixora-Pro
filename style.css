@@ -894,3 +894,16 @@ transform:scale(1);
 }
 
 }
+/* ===================================
+Build 016 - Image Drag Style
+=================================== */
+
+#editorImage{
+
+cursor:grab;
+
+user-select:none;
+
+touch-action:none;
+
+}
