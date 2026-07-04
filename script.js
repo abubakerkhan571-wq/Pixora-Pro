@@ -519,3 +519,30 @@ if(saturationSlider){
     });
 
 }
+// ===================================
+// Build 036 - Effects Panel
+// ===================================
+
+const toolEffects =
+document.getElementById("toolEffects");
+
+const effectsPanel =
+document.getElementById("effectsPanel");
+
+if(toolEffects && effectsPanel){
+
+toolEffects.addEventListener("click",()=>{
+
+if(effectsPanel.style.display==="block"){
+
+effectsPanel.style.display="none";
+
+}else{
+
+effectsPanel.style.display="block";
+
+}
+
+});
+
+}
