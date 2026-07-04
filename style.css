@@ -1296,3 +1296,34 @@ color:white;
 font-weight:bold;
 
 }
+/* ===================================
+Build 039 - Text Layer
+=================================== */
+
+.editorText{
+
+position:absolute;
+
+top:50%;
+
+left:50%;
+
+transform:translate(-50%,-50%);
+
+color:#ffffff;
+
+font-size:32px;
+
+font-weight:bold;
+
+font-family:Arial,sans-serif;
+
+cursor:move;
+
+user-select:none;
+
+z-index:50;
+
+text-shadow:0 2px 8px rgba(0,0,0,.5);
+
+}
