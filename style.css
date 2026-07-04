@@ -995,3 +995,67 @@ width:100%;
     0 20px 45px rgba(80,120,255,.25),
     0 0 35px rgba(130,90,255,.18);
 }
+/* ===================================
+Build 026 - Animated Premium Background
+=================================== */
+
+body{
+
+background:#08090f;
+
+background-image:
+
+radial-gradient(circle at 20% 20%,rgba(76,120,255,.22),transparent 30%),
+
+radial-gradient(circle at 80% 30%,rgba(170,70,255,.20),transparent 35%),
+
+radial-gradient(circle at 50% 80%,rgba(0,220,255,.15),transparent 35%);
+
+background-size:200% 200%;
+
+animation:premiumBG 16s ease infinite;
+
+}
+
+@keyframes premiumBG{
+
+0%{
+
+background-position:0% 50%;
+
+}
+
+25%{
+
+background-position:100% 30%;
+
+}
+
+50%{
+
+background-position:100% 100%;
+
+}
+
+75%{
+
+background-position:0% 100%;
+
+}
+
+100%{
+
+background-position:0% 50%;
+
+}
+
+}
+.toolCard{
+
+backdrop-filter:blur(12px);
+
+-webkit-backdrop-filter:blur(12px);
+
+border:1px solid rgba(255,255,255,.08);
+
+}
