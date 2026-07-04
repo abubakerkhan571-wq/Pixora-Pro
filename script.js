@@ -389,3 +389,36 @@ if (filterButton && filterPanel) {
     });
 
 }
+// ===================================
+// Build 029 - Contrast & Saturation
+// ===================================
+
+const contrastSlider =
+document.getElementById("contrastSlider");
+
+const saturationSlider =
+document.getElementById("saturationSlider");
+
+if(contrastSlider){
+
+contrastSlider.oninput=(e)=>{
+
+contrast=parseInt(e.target.value);
+
+updateFilters();
+
+};
+
+}
+
+if(saturationSlider){
+
+saturationSlider.oninput=(e)=>{
+
+saturate=parseInt(e.target.value);
+
+updateFilters();
+
+};
+
+}
