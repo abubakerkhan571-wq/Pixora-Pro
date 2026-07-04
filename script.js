@@ -937,3 +937,29 @@ e.target.classList.add("selected");
 activeText = e.target;
 
 });
+// ===================================
+// Build 046 - Duplicate Text
+// ===================================
+
+const duplicateTextBtn =
+document.getElementById("duplicateTextBtn");
+
+if(duplicateTextBtn){
+
+duplicateTextBtn.addEventListener("click",()=>{
+
+if(!activeText) return;
+
+const copy = activeText.cloneNode(true);
+
+copy.style.left =
+(parseInt(activeText.style.left||100)+30)+"px";
+
+copy.style.top =
+(parseInt(activeText.style.top||100)+30)+"px";
+
+editorCanvas.appendChild(copy);
+
+});
+
+}
