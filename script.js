@@ -237,8 +237,7 @@ if(!dragging) return;
 currentX = e.clientX-startX;
 currentY = e.clientY-startY;
 
-editorImage.style.transform =
-`translate(${currentX}px,${currentY}px)`;
+updateTransform();
 
 });
 
@@ -273,8 +272,7 @@ if(currentScale<0.3) currentScale=0.3;
 
 if(currentScale>5) currentScale=5;
 
-editorImage.style.transform =
-`translate(${currentX}px,${currentY}px) scale(${currentScale})`;
+updateTransform();
 
 });
 // ===================================
@@ -291,9 +289,20 @@ if(toolEffects){
 
         currentRotation += 90;
 
-        editorImage.style.transform =
-        `translate(${currentX}px,${currentY}px) scale(${currentScale}) rotate(${currentRotation}deg)`;
+        updateTransform();
 
     });
+
+}
+// ===================================
+// Build 019 - Update Transform Engine
+// ===================================
+
+function updateTransform(){
+
+    editorImage.style.transform =
+    `translate(${currentX}px,${currentY}px)
+     scale(${currentScale})
+     rotate(${currentRotation}deg)`;
 
 }
