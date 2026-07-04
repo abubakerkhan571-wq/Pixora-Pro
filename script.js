@@ -680,3 +680,48 @@ textInput.value="";
 });
 
 }
+// ===================================
+// Build 040 - Move Text
+// ===================================
+
+let activeText = null;
+
+let textOffsetX = 0;
+
+let textOffsetY = 0;
+
+editorCanvas.addEventListener("pointerdown",(e)=>{
+
+if(!e.target.classList.contains("editorText")) return;
+
+activeText = e.target;
+
+const rect = activeText.getBoundingClientRect();
+
+textOffsetX = e.clientX - rect.left;
+
+textOffsetY = e.clientY - rect.top;
+
+});
+
+window.addEventListener("pointermove",(e)=>{
+
+if(!activeText) return;
+
+const canvasRect = editorCanvas.getBoundingClientRect();
+
+activeText.style.left =
+(e.clientX - canvasRect.left - textOffsetX)+"px";
+
+activeText.style.top =
+(e.clientY - canvasRect.top - textOffsetY)+"px";
+
+activeText.style.transform="none";
+
+});
+
+window.addEventListener("pointerup",()=>{
+
+activeText = null;
+
+});
