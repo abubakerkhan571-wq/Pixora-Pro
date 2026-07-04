@@ -546,3 +546,78 @@ effectsPanel.style.display="block";
 });
 
 }
+// ===================================
+// Build 037 - Working Effects
+// ===================================
+
+const effectOriginal =
+document.getElementById("effectOriginal");
+
+const effectBW =
+document.getElementById("effectBW");
+
+const effectSepia =
+document.getElementById("effectSepia");
+
+const effectVintage =
+document.getElementById("effectVintage");
+
+const effectBlur =
+document.getElementById("effectBlur");
+
+if(effectOriginal){
+
+effectOriginal.onclick=()=>{
+
+editorImage.style.filter=
+`brightness(${brightness}%)
+contrast(${contrast}%)
+saturate(${saturate}%)`;
+
+};
+
+}
+
+if(effectBW){
+
+effectBW.onclick=()=>{
+
+editorImage.style.filter=
+`grayscale(100%)`;
+
+};
+
+}
+
+if(effectSepia){
+
+effectSepia.onclick=()=>{
+
+editorImage.style.filter=
+`sepia(100%)`;
+
+};
+
+}
+
+if(effectVintage){
+
+effectVintage.onclick=()=>{
+
+editorImage.style.filter=
+`sepia(60%) contrast(120%) brightness(110%)`;
+
+};
+
+}
+
+if(effectBlur){
+
+effectBlur.onclick=()=>{
+
+editorImage.style.filter=
+`blur(3px)`;
+
+};
+
+}
