@@ -918,3 +918,22 @@ activeText = null;
 });
 
    }
+// ===================================
+// Build 045 - Select Text
+// ===================================
+
+editorCanvas.addEventListener("click",(e)=>{
+
+if(!e.target.classList.contains("editorText")) return;
+
+document.querySelectorAll(".editorText").forEach(item=>{
+
+item.classList.remove("selected");
+
+});
+
+e.target.classList.add("selected");
+
+activeText = e.target;
+
+});
