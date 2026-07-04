@@ -1100,3 +1100,34 @@ box-shadow:
 0 0 45px #8d4dff;
 
 }
+/* ===================================
+Build 028 - Filter Panel Animation
+=================================== */
+
+#filterPanel{
+
+transition:.3s;
+
+animation:filterUp .3s ease;
+
+}
+
+@keyframes filterUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(60px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
