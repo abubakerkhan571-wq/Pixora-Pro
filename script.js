@@ -422,3 +422,37 @@ updateFilters();
 };
 
 }
+// ===================================
+// Build 032 - Filter Engine
+// ===================================
+
+let brightness = 100;
+let contrast = 100;
+let saturate = 100;
+
+function updateFilters(){
+
+    editorImage.style.filter =
+    `brightness(${brightness}%)
+     contrast(${contrast}%)
+     saturate(${saturate}%)`;
+
+}
+// ===================================
+// Build 032 - Brightness Slider
+// ===================================
+
+const brightnessSlider =
+document.getElementById("brightnessSlider");
+
+if(brightnessSlider){
+
+    brightnessSlider.addEventListener("input",(e)=>{
+
+        brightness = parseInt(e.target.value);
+
+        updateFilters();
+
+    });
+
+}
