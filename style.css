@@ -907,3 +907,13 @@ user-select:none;
 touch-action:none;
 
 }
+/* ===================================
+Build 017 - Smooth Zoom
+=================================== */
+
+#editorImage{
+
+transition:
+transform .12s linear;
+
+}
