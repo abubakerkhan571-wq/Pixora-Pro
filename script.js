@@ -483,3 +483,39 @@ if(toolFilter && filterPanel){
     });
 
 }
+// ===================================
+// Build 034 - Contrast Slider
+// ===================================
+
+const contrastSlider =
+document.getElementById("contrastSlider");
+
+if(contrastSlider){
+
+    contrastSlider.addEventListener("input",(e)=>{
+
+        contrast = parseInt(e.target.value);
+
+        updateFilters();
+
+    });
+
+}
+// ===================================
+// Build 035 - Saturation Slider
+// ===================================
+
+const saturationSlider =
+document.getElementById("saturationSlider");
+
+if(saturationSlider){
+
+    saturationSlider.addEventListener("input",(e)=>{
+
+        saturate = parseInt(e.target.value);
+
+        updateFilters();
+
+    });
+
+}
