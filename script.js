@@ -194,9 +194,15 @@ function setupHomeEvents(){
 
         photoEditorCard.onclick = function(){
 
-            openScreen(editorScreen);
+    openScreen(editorScreen);
 
-        };
+    setTimeout(() => {
+
+        imagePicker.click();
+
+    }, 200);
+
+};
 
     }
 
