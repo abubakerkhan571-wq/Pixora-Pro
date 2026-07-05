@@ -123,6 +123,61 @@ reader.readAsDataURL(file);
 /* ===================================
 Pixora Pro v2
 Build 002
+Transform Engine
+=================================== */
+
+// Transform State
+
+const imageState = {
+
+x:0,
+
+y:0,
+
+scale:1,
+
+rotation:0
+
+};
+
+// Apply Transform
+
+function applyImageTransform(){
+
+editorImage.style.transform=
+`translate(${imageState.x}px,${imageState.y}px)
+scale(${imageState.scale})
+rotate(${imageState.rotation}deg)`;
+
+}
+
+// Reset Transform
+
+function resetImageTransform(){
+
+imageState.x=0;
+imageState.y=0;
+imageState.scale=1;
+imageState.rotation=0;
+
+applyImageTransform();
+
+}
+
+// Auto Reset When New Image Loads
+
+imagePicker.addEventListener("change",()=>{
+
+setTimeout(()=>{
+
+resetImageTransform();
+
+},50);
+
+});
+/* ===================================
+Pixora Pro v2
+Build 002
 Image Drag
 =================================== */
 
