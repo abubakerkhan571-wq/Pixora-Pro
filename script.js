@@ -158,10 +158,12 @@ let imageDragging = false;
 
 function updateImageTransform(){
 
+function updateImageTransform(){
+
 editorImage.style.transform=
 `translate(${imageX}px,${imageY}px)
-scale(1)
-rotate(0deg)`;
+scale(${imageScale})
+rotate(${imageRotation}deg)`;
 
 }
 
@@ -204,3 +206,52 @@ editorImage.style.cursor="grab";
 }
 
 });
+/* ===================================
+   Build 003
+   Mobile Pinch Zoom
+===================================*/
+
+let imageScale = 1;
+let imageRotation = 0;
+
+let startDistance = 0;
+
+function getDistance(t1,t2){
+
+const dx=t2.clientX-t1.clientX;
+const dy=t2.clientY-t1.clientY;
+
+return Math.sqrt(dx*dx+dy*dy);
+
+}
+
+editorImage.addEventListener("touchstart",(e)=>{
+
+if(e.touches.length===2){
+
+startDistance=
+getDistance(e.touches[0],e.touches[1]);
+
+}
+
+},{passive:false});
+
+editorImage.addEventListener("touchmove",(e)=>{
+
+if(e.touches.length!==2) return;
+
+e.preventDefault();
+
+const newDistance=
+getDistance(e.touches[0],e.touches[1]);
+
+imageScale*=newDistance/startDistance;
+
+if(imageScale<0.2) imageScale=0.2;
+if(imageScale>5) imageScale=5;
+
+startDistance=newDistance;
+
+updateImageTransform();
+
+},{passive:false});
