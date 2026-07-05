@@ -143,3 +143,64 @@ reader.readAsDataURL(file);
 });
 
 }
+/* ===================================
+   Build 002
+   Image Drag System
+===================================*/
+
+let imageX = 0;
+let imageY = 0;
+
+let dragStartX = 0;
+let dragStartY = 0;
+
+let imageDragging = false;
+
+function updateImageTransform(){
+
+editorImage.style.transform=
+`translate(${imageX}px,${imageY}px)
+scale(1)
+rotate(0deg)`;
+
+}
+
+if(editorImage){
+
+editorImage.addEventListener("pointerdown",(e)=>{
+
+if(editorImage.style.display==="none") return;
+
+imageDragging=true;
+
+dragStartX=e.clientX-imageX;
+dragStartY=e.clientY-imageY;
+
+editorImage.style.cursor="grabbing";
+
+});
+
+}
+
+window.addEventListener("pointermove",(e)=>{
+
+if(!imageDragging) return;
+
+imageX=e.clientX-dragStartX;
+imageY=e.clientY-dragStartY;
+
+updateImageTransform();
+
+});
+
+window.addEventListener("pointerup",()=>{
+
+imageDragging=false;
+
+if(editorImage){
+
+editorImage.style.cursor="grab";
+
+}
+
+});
