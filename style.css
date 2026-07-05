@@ -1593,3 +1593,44 @@ font-size:20px;
 cursor:pointer;
 
 }
+/* ===================================
+Build 004 - Transform Panel
+=================================== */
+
+#transformPanel{
+
+display:none;
+
+position:absolute;
+
+left:0;
+
+right:0;
+
+bottom:80px;
+
+padding:16px;
+
+background:#1f1f1f;
+
+border-radius:20px 20px 0 0;
+
+z-index:100;
+
+}
+
+#transformPanel label{
+
+display:block;
+
+color:white;
+
+margin-bottom:10px;
+
+}
+
+#transformPanel input{
+
+width:100%;
+
+}
