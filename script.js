@@ -255,3 +255,42 @@ startDistance=newDistance;
 updateImageTransform();
 
 },{passive:false});
+/* ===================================
+Build 004
+Rotate Controller
+===================================*/
+
+const toolEffects =
+document.getElementById("toolEffects");
+
+const transformPanel =
+document.getElementById("transformPanel");
+
+const rotateSlider =
+document.getElementById("rotateSlider");
+
+if(toolEffects){
+
+toolEffects.addEventListener("click",()=>{
+
+transformPanel.style.display=
+transformPanel.style.display==="block"
+?"none"
+:"block";
+
+});
+
+}
+
+if(rotateSlider){
+
+rotateSlider.addEventListener("input",()=>{
+
+imageRotation=
+parseInt(rotateSlider.value);
+
+updateImageTransform();
+
+});
+
+}
