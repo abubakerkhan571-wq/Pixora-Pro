@@ -120,3 +120,57 @@ editorImage.style.display="block";
 reader.readAsDataURL(file);
 
 });
+/* ===================================
+Pixora Pro v2
+Build 002
+Image Drag
+=================================== */
+
+let imageX=0;
+let imageY=0;
+
+let startX=0;
+let startY=0;
+
+let isDragging=false;
+
+function updateImagePosition(){
+
+editorImage.style.transform=
+`translate(${imageX}px,${imageY}px)`;
+
+}
+
+editorImage.addEventListener("touchstart",(e)=>{
+
+if(editorImage.style.display==="none") return;
+
+if(e.touches.length!==1) return;
+
+isDragging=true;
+
+startX=e.touches[0].clientX-imageX;
+startY=e.touches[0].clientY-imageY;
+
+});
+
+editorImage.addEventListener("touchmove",(e)=>{
+
+if(!isDragging) return;
+
+if(e.touches.length!==1) return;
+
+e.preventDefault();
+
+imageX=e.touches[0].clientX-startX;
+imageY=e.touches[0].clientY-startY;
+
+updateImagePosition();
+
+},{passive:false});
+
+editorImage.addEventListener("touchend",()=>{
+
+isDragging=false;
+
+});
