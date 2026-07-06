@@ -229,3 +229,53 @@ editorImage.addEventListener("touchend",()=>{
 isDragging=false;
 
 });
+/* ===================================
+Pixora Pro v2
+Build 003
+One Finger Drag
+=================================== */
+
+let isDragging=false;
+
+let dragStartX=0;
+let dragStartY=0;
+
+editorImage.addEventListener("touchstart",(e)=>{
+
+if(editorImage.style.display==="none") return;
+
+if(e.touches.length!==1) return;
+
+isDragging=true;
+
+dragStartX=e.touches[0].clientX-imageState.x;
+dragStartY=e.touches[0].clientY-imageState.y;
+
+});
+
+editorImage.addEventListener("touchmove",(e)=>{
+
+if(!isDragging) return;
+
+if(e.touches.length!==1) return;
+
+e.preventDefault();
+
+imageState.x=e.touches[0].clientX-dragStartX;
+imageState.y=e.touches[0].clientY-dragStartY;
+
+applyImageTransform();
+
+},{passive:false});
+
+editorImage.addEventListener("touchend",()=>{
+
+isDragging=false;
+
+});
+
+editorImage.addEventListener("touchcancel",()=>{
+
+isDragging=false;
+
+});
