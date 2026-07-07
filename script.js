@@ -2,12 +2,8 @@
    PIXORA PRO — BUILD 001 (Foundation)
    Namespace: PixoraApp
    =============================================================== */
-
 const PixoraApp = {
 
-  /* -----------------------------------------------------------
-     Central config
-  ----------------------------------------------------------- */
   config: {
     SCREENS: ['splash', 'home', 'editor']
   },
@@ -33,10 +29,6 @@ const PixoraApp = {
     };
   },
 
-  /* -----------------------------------------------------------
-     Android viewport-height fix (100vh bug),
-     carried forward — still required on every screen.
-  ----------------------------------------------------------- */
   setRealViewportHeight() {
     const applyVh = () => {
       const vh = window.innerHeight * 0.01;
@@ -48,12 +40,6 @@ const PixoraApp = {
     window.addEventListener('orientationchange', () => setTimeout(applyVh, 200));
   },
 
-  /* ===============================================================
-     SCREEN MANAGER MODULE
-     Future builds (Splash animation, Home cards, Editor tools)
-     will call PixoraApp.ScreenManager.showScreen('home') etc.
-     No other module should touch screen visibility directly.
-     =============================================================== */
   ScreenManager: {
 
     showScreen(screenName) {
