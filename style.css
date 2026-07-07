@@ -9,8 +9,7 @@
    Future builds inhi variables ko use karenge — koi hardcoded
    color future files mein nahi hona chahiye.
 ----------------------------------------------------------- */
-:root {
-  /* Colors */
+  :root {
   --pixora-bg-primary: #0d0d0f;
   --pixora-bg-surface: #1a1a1e;
   --pixora-bg-elevated: #232327;
@@ -23,7 +22,6 @@
   --pixora-success: #2ecc71;
   --pixora-danger: #ff5c5c;
 
-  /* Typography */
   --pixora-font: 'Poppins', -apple-system, Roboto, Arial, sans-serif;
   --pixora-fs-xs: 12px;
   --pixora-fs-sm: 14px;
@@ -31,36 +29,28 @@
   --pixora-fs-lg: 20px;
   --pixora-fs-xl: 28px;
 
-  /* Spacing scale */
   --pixora-space-xs: 4px;
   --pixora-space-sm: 8px;
   --pixora-space-md: 16px;
   --pixora-space-lg: 24px;
   --pixora-space-xl: 32px;
 
-  /* Radius */
   --pixora-radius-sm: 8px;
   --pixora-radius-md: 14px;
   --pixora-radius-lg: 20px;
   --pixora-radius-round: 999px;
 
-  /* Shadows */
   --pixora-shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.35);
   --pixora-shadow-strong: 0 8px 28px rgba(0, 0, 0, 0.5);
 
-  /* Real viewport height (JS se set hoga — Android fix) */
   --vh: 1vh;
 
-  /* Z-index scale — future overlapping panels ke liye */
   --pixora-z-base: 1;
   --pixora-z-panel: 100;
   --pixora-z-modal: 200;
   --pixora-z-toast: 300;
 }
 
-/* -----------------------------------------------------------
-   2. RESET
------------------------------------------------------------ */
 * {
   margin: 0;
   padding: 0;
@@ -82,11 +72,6 @@ button {
   cursor: pointer;
 }
 
-/* -----------------------------------------------------------
-   3. APP ROOT + SCREEN ARCHITECTURE
-   Har screen (splash/home/editor) isi container ke andar,
-   ek waqt mein sirf ek screen visible hoti hai.
------------------------------------------------------------ */
 #pixora-root {
   position: relative;
   width: 100vw;
@@ -115,7 +100,6 @@ button {
   display: none !important;
 }
 
-/* Temporary placeholder text — future builds ke content se replace hoga */
 .pixora-placeholder-text {
   color: var(--pixora-text-secondary);
   font-size: var(--pixora-fs-md);
@@ -124,13 +108,6 @@ button {
   padding: var(--pixora-space-lg);
 }
 
-/* -----------------------------------------------------------
-   4. REUSABLE COMPONENT CLASSES (Foundation set)
-   Future builds inhi classes ko extend karenge, taake har
-   jagah button/card design consistent rahe.
------------------------------------------------------------ */
-
-/* Premium card — Home screen aur panels ke liye */
 .pixora-card {
   background: var(--pixora-bg-surface);
   border-radius: var(--pixora-radius-md);
@@ -138,7 +115,6 @@ button {
   border: 1px solid var(--pixora-border);
 }
 
-/* Premium custom button — native button look override */
 .pixora-btn {
   background: var(--pixora-accent);
   color: var(--pixora-text-primary);
